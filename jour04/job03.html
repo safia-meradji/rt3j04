@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trier les données Pokemon</title>
+</head>
+<body>
+  <form id="filterForm">
+    <label for="idInput">ID:</label>
+    <input type="text" id="idInput">
+
+    <label for="nameInput">Nom:</label>
+    <input type="text" id="nameInput">
+
+    <label for="typeSelect">Type:</label>
+    <select id="typeSelect">
+      <option value="">Tous les types</option>
+      <option value="Grass">Grass</option>
+      <option value="Fire">Fire</option>
+      <option value="Water">Water</option>
+      <option value="Electric">Electric</option>
+      <option value="Bug">Bug</option>
+      <option value="Normal">Normal</option>
+      <option value="Flying">Flying</option>
+    </select>
+
+    <input type="button" value="Filtrer" id="filterButton">
+  </form>
+
+  <div id="resultContainer"></div>
+
+  <script>
+    const pokemonData = [
+      {
+        "id": "001",
+        "name": "Bulbasaur",
+        "type": ["Grass", "Poison"]
+      },
+      {
+        "id": "004",
+        "name": "Charmander",
+        "type": ["Fire"]
+      },
+      {
+        "id": "007",
+        "name": "Squirtle",
+        "type": ["Water"]
+      },
+      {
+        "id": "025",
+        "name": "Pikachu",
+        "type": ["Electric"]
+      },
+      {
+        "id": "010",
+        "name": "Caterpie",
+        "type": ["Bug"]
+      },
+      {
+        "id": "016",
+        "name": "Pidgey",
+        "type": ["Normal", "Flying"]
+      }
+      // Ajoutez d'autres données de Pokemon ici
+    ];
+
+    const filterForm = document.getElementById('filterForm');
+    const filterButton = document.getElementById('filterButton');
+    const resultContainer = document.getElementById('resultContainer');
+
+    filterButton.addEventListener('click', () => {
+      const idInput = document.getElementById('idInput').value;
+      const nameInput = document.getElementById('nameInput').value;
+      const typeSelect = document.getElementById('typeSelect').value;
+
+      const filters = {
+        id: idInput,
+        name: nameInput,
+        type: typeSelect
+      };
+
+      const filteredData = pokemonData.filter(pokemon => {
+        return (
+          (!filters.id || pokemon.id === filters.id) &&
+          (!filters.name || pokemon.name.toLowerCase().includes(filters.name.toLowerCase())) &&
+          (!filters.type || pokemon.type.includes(filters.type))
+        );
+      });
+
+      displayPokemon(filteredData);
+    });
+
+    function displayPokemon(pokemonData) {
+      resultContainer.innerHTML = '';
+
+      if (pokemonData.length === 0) {
+        resultContainer.textContent = 'Aucun résultat trouvé.';
+        return;
+      }
+
+      pokemonData.forEach(pokemon => {
+        const pokemonElement = document.createElement('div');
+        pokemonElement.innerHTML = `
+          <h3>${pokemon.name}</h3>
+          <p>ID: ${pokemon.id}</p>
+          <p>Type: ${pokemon.type.join(', ')}</p>
+          <hr>
+        `;
+        resultContainer.appendChild(pokemonElement);
+      });
+    }
+  </script>
+</body>
+</html>

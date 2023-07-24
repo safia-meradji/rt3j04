@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Exemple de récupération de fichier avec Fetch</title>
+</head>
+<body>
+  <button id="button">Cliquez ici</button>
+  <p id="content"></p>
+
+  <script>
+    const button = document.getElementById('button');
+    const contentParagraph = document.getElementById('content');
+
+    button.addEventListener('click', () => {
+      fetch('expression.txt')
+        .then(response => response.text())
+        .then(data => {
+          contentParagraph.textContent = data;
+        })
+        .catch(error => {
+          console.error('Erreur:', error);
+        });
+    });
+  </script>
+</body>
+</html>

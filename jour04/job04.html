@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Liste des utilisateurs</title>
+</head>
+<body>
+  <table id="userTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <button id="updateButton">Mettre à jour</button>
+
+  <script>
+    const updateButton = document.getElementById('updateButton');
+    const userTableBody = document.querySelector('#userTable tbody');
+
+    // Fonction pour récupérer et afficher les utilisateurs
+    function getUsers() {
+      fetch('users.php')
+        .then(response => response.json())
+        .then(data => {
+          // Réinitialiser le contenu du tableau
+          userTableBody.innerHTML = '';
+
+          // Ajouter les utilisateurs dans le tableau
+          data.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${user.id}</td>
+              <td>${user.nom}</td>
+              <td>${user.prenom}</td>
+              <td>${user.email}</td>
+            `;
+            userTableBody.appendChild(row);
+          });
+        })
+        .catch(error => {
+          console.error('Erreur:', error);
+        });
+    }
+
+    // Mettre à jour les utilisateurs lors du clic sur le bouton "Mettre à jour"
+    updateButton.addEventListener('click', getUsers);
+
+    // Appeler la fonction getUsers() au chargement initial de la page
+    getUsers();
+  </script>
+</body>
+</html>
